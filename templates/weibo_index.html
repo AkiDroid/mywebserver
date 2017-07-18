@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>weibo</title>
+    <style>
+        .comment {
+            border: 1px red solid;
+        }
+    </style>
+</head>
+<body>
+<div class="add-new-weibo">
+    <input id='id-input-weibo'>
+    <button id='id-button-add'>写新微博</button>
+</div>
+
+<div class="weibo-list">
+    {% for w in weibos %}
+        <div class="weibo-cell" data-id="{{ w.id }}">
+            <div class="weibo-content">
+                <span class="content">{{ w.content }}</span>> from {{ user.username }}
+                <button class="weibo-delete" data-href="/weibo/delete?id={{ w.id }}">删除</button>
+                <button class="weibo-edit" data-href="/weibo/edit?id={{ w.id }}">修改</button>
+            </div>
+            <div class="comment-list-{{ w.id }}">
+                {% for c in w.comments() %}
+                    <div class="comment" data-id={{ c.id }}>
+                        {{ c.user().username }} : {{ c.content }}
+                        <button class="comment-delete">删除</button>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="gua-form comment-form"
+                 data-id="{{ w.id }}">
+                <input class="weibo-id" type="hidden" name="weibo_id" value="{{ w.id }}">
+                <input class="comment-content" name="content">
+                <br>
+                <button class="comment-add" type="submit">添加评论</button>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+<script src='/static?file=gua.js'></script>
+<script src='/static?file=weibo.js'></script>
+</body>
+</html>
